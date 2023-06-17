@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prom_config/:/config
+    command:
+      - '--config.file=/config/prometheus.yml'
+    ports:
+      - 9090:9090
+    networks:
+      - prom
+
+  blackbox:
+    image: prom/blackbox-exporter
+    volumes:
+      - ./bb_config/:/config
+    command:
+      - '--config.file=/config/blackbox.yml'
+      - '--web.config.file=/config/web.yml'
+    ports:
+      - 9115:9115
+    networks:
+      - prom
+
+  endpoint:
+    image: nginx
+    volumes:
+      - ./endpoint/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8080:80
+    networks:
+      - prom
+
+networks:
+  prom:
+    driver: bridge
