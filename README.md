@@ -10,5 +10,9 @@ Declare credential under prom/bb_config/web.yml and use it as ['--web.config-fil
 
 # Prometheus
 Prometheus then request to blackbox exporter with basic auth and blackbox exporter then grant the access to pull its scrape from the authenticated prometheus server.
+## Configuration
+Define credential under prom/prom_config/prometheus.yml as ['basic-auth'].
 
 
+# Generating password to use in basic auth
+htpasswd -nBC 10 "" | tr -d ':\n'
